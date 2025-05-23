@@ -10,9 +10,11 @@ A minimal to-do list application built with Alpine.js.
 
 - 📝 Add new tasks with text input
 - ✅ Toggle task completion status
-- ❌ Delete tasks permanently
 - 💾 Local storage persistence
-- 📱 Responsive design
+- URL display
+- Multi-line Support
+  - Press Shift+Enter for new lines
+  - Start lines with `- ` for automatic bullets
 
 ## Installation
 
