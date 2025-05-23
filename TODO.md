@@ -1,4 +1,3 @@
-- [ ] Better responsive Design: for iPhone 12, the input-group div is overflown, text input field is too wide.
 - [ ] Multiline task
   - Compare hosting providers:
    - https://digitalocean.com
