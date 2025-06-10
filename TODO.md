@@ -1,1 +1,0 @@
-- [ ] Add drag and drop functionality. Reorder tasks by dragging them.
