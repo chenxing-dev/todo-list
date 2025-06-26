@@ -1,1 +1,1 @@
-- [ ] Add drag and drop functionality. Reorder tasks by dragging them.
+- add a feature to filter tasks by status (all, active, completed). 

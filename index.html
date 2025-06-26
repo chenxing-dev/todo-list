@@ -27,7 +27,35 @@
     .input-group {
       display: flex;
       gap: 8px;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .filter-controls {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0rem;
+      padding: 0.5rem;
+      background: #f8f9fa;
+      border-radius: 12px;
+    }
+
+    .filter-btn {
+      padding: 8px 16px;
+      background: transparent;
+      color: #646464;
+      font-size: 0.9rem;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+    }
+
+    .filter-btn:hover {
+      background: #ddd;
+      transform: none;
+    }
+
+    .filter-btn.active {
+      background: #646464;
+      color: white;
     }
 
     .task {
@@ -173,9 +201,15 @@
         x-ref="textarea"></textarea>
       <button @click="addTask">Add Task</button>
     </div>
+    
+    <div class="filter-controls">
+      <button class="filter-btn" :class="{ 'active': currentFilter === 'all' }" @click="currentFilter = 'all'">All</button>
+      <button class="filter-btn" :class="{ 'active': currentFilter === 'active' }" @click="currentFilter = 'active'">Active</button>
+      <button class="filter-btn" :class="{ 'active': currentFilter === 'completed' }" @click="currentFilter = 'completed'">Complete</button>
+    </div>
 
     <ul>
-      <template x-for="task in tasks" :key="task.id">
+      <template x-for="task in filteredTasks" :key="task.id">
         <li class="task">
           <input type="checkbox" x-model="task.completed" />
           <span class="task-text" :class="{ 'line-through': task.completed }""
@@ -184,6 +218,18 @@
           <button class="delete-btn" aria-label="Delete task" @click="deleteTask(task.id)">❌</button>
         </li>
       </template>
+      <template x-if="filteredTasks.length === 0">
+          <div class="empty-state">
+              <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="12" y1="8" x2="12" y2="12"></line>
+                  <line x1="12" y1="16" x2="12.01" y2="16"></line>
+              </svg>
+              <p x-text="currentFilter === 'all' ? 'No tasks yet. Add your first task!' : 
+                              currentFilter === 'active' ? 'No active tasks. Good job!' : 
+                              'No completed tasks yet. Get to work!'"></p>
+          </div>
+      </template>
     </ul>
   </div>
   <script>
@@ -191,6 +237,7 @@
       return {
         newTask: "",
         tasks: [],
+        currentFilter: 'all',
         // Auto-evaluate init() method
         init() {
           // Load saved tasks on initialization
@@ -226,6 +273,14 @@
         },
         deleteTask(taskId) {
           this.tasks = this.tasks.filter(task => task.id !== taskId);
+        },
+        get filteredTasks() {
+            if (this.currentFilter === 'active') {
+                return this.tasks.filter(task => !task.completed);
+            } else if (this.currentFilter === 'completed') {
+                return this.tasks.filter(task => task.completed);
+            }
+            return this.tasks;
         },
         formatText(text) {
           // URL detection and linking
