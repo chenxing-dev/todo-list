@@ -1,1 +1,0 @@
-- add a feature to filter tasks by status (all, active, completed). 
